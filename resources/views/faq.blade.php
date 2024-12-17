@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Page Utama</title>
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+  @vite(['public/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>

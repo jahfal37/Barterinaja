@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 protected $table = 'posts';
-    protected $fillable = ['title', 'content', 'username', 'status'];
+    protected $fillable = ['product_name', 'name', 'category', 'description'];
 
     // Jika Anda ingin mendefinisikan hubungan antara model Post dan User
     public function user()

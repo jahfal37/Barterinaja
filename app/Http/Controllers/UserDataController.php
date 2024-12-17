@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\User; // Pastikan model User sudah digunakan
 
@@ -82,5 +82,18 @@ class UserDataController extends Controller
         // Redirect ke halaman sebelumnya dengan pesan sukses
         return redirect()->route('admin.pengguna')->with('success', 'User berhasil diperbarui.');
 
+    }
+    public function admin()
+    {
+      // Total postingan dari tabel items
+    $totalPostingan = Item::count();
+
+    // Total pengguna dengan role 'user'
+    $totalPengguna = User::where('role', 'user')->count();
+
+    // Total transaksi sama dengan total postingan
+    
+    // Kirim data ke view
+    return view('admin.dashboard', compact('totalPostingan', 'totalPengguna'));
     }
 }

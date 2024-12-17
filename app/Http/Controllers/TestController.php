@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\User;
-use Illuminate\Http\Request;
 
-class AdminDashboardController extends Controller
+class TestController extends Controller
 {
     public function admin()
     {

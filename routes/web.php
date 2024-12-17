@@ -11,10 +11,10 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserDataController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\TestController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ItemController::class, 'index'])->name('index');
 
 // Route untuk Login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -33,9 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/faq', [FAQController::class, 'index'])->name('faq');
 Route::get('/aboutus', [ABOUTUSController::class, 'index'])->name('aboutus');
-Route::get('/maps', function () {
-    return view('maps');
-});
+Route::get('/maps', [AuthController::class, 'maps'])->name('maps');
 Route::get('/item-page', [PageController::class, 'showItemPage']);
 
 // Menampilkan halaman tambah/edit barang
@@ -55,13 +53,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('messages/chat/{receiver_id}', [MessageController::class, 'chat'])->name('messages.chat');
     Route::post('messages/store', [MessageController::class, 'store'])->name('messages.store');
 });
-
-Route::get('/welcome', [ItemController::class, 'index'])->name('welcome');
-Route::get('/user/dashboard', [AuthController::class, 'user'])->name('user.dashboard');
-
+Route::get('/index', [ItemController::class, 'index'])->name('index');
+Route::get('/user/dashboard', [ItemController::class, 'user'])->name('user.dashboard');
+Route::get('/admin/dashboard', [TestController::class, 'admin'])->name('admin.dashboard');
 Route::prefix('admin')->group(function () {
     // Tampilkan halaman dashboard
-    Route::get('/dashboard', [AuthController::class, 'admin'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'admin'])->name('admin.dashboard');
     // Tampilkan daftar postingan
     Route::get('/postingan', [PostController::class, 'admin'])->name('admin.postingan');
     // Tampilkan daftar pengguna
@@ -72,4 +69,18 @@ Route::prefix('admin')->group(function () {
     Route::get('/{username}/edit', [UserDataController::class, 'edit'])->name('admin.user_edit');
     // Proses update pengguna
     Route::put('/{username}', [UserDataController::class, 'update'])->name('admin.user_update');
+});
+
+
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
+
+
+// Middleware pengecekan role
+Route::middleware(\App\Http\Middleware\RedirectBasedOnRole::class)->group(function () {
+    Route::get('/check-role', function () {
+        return 'Redirecting based on role...';
+    });
 });

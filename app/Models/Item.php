@@ -32,7 +32,7 @@ class Item extends Model
         return $this->hasMany(Screenshot::class, 'item_id');
     }
  
-    public function index() {
+    public function barang() {
         // Ambil semua data dari tabel 'items'
         $items = Item::all();
     

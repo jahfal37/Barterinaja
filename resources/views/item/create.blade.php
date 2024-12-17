@@ -6,100 +6,100 @@
     <title>Tambah/Edit Barang</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/index.css"> <!-- Link file CSS eksternal -->
+    @vite(['public/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <!-- Menyertakan Navbar -->
     @include('partials.navbar')
 
     <!-- Konten Utama -->
-    <div class="container mt-4 gray-background">
+ 
+    <div class="flex container ">
+    <!-- Kolom Form -->
+    <div class="form-section w-full p-5 bg-gray-100 rounded-md shadow-md p-5">
         <form action="/save-item" method="POST" enctype="multipart/form-data">
             @csrf
-            <!-- Nama Produk Section -->
-            <div class="row form-section">
-                <div class="col-md-8">
-                    <label for="productName" class="form-label">Nama Produk</label>
-                    <input type="text" class="form-control" id="productName" name="product_name" placeholder="Masukkan nama produk" required>
+            <div class="container mx-auto px-4 py-8">
+    <!-- Flex Container -->
+    <div class="flex justify-between items-start gap-8">
+        <!-- Kolom Formulir -->
+        <div class="w-3/4 p-6 bg-white rounded-md shadow-md">
+            <form action="/save-item" method="POST" enctype="multipart/form-data">
+                <!-- Nama Produk Section -->
+                <div class="mb-4">
+                    <label for="productName" class="block text-gray-700 font-medium">Nama Produk</label>
+                    <input type="text" class="form-control w-full p-2 border rounded-md" id="productName" name="product_name" placeholder="Masukkan nama produk" required>
                 </div>
-                <div class="col-md-4">
-                    <h5>Aturan Upload Barang:</h5>
-                    <div class="upload-instructions">
-                        <ul>
-                            <li>Deskripsi jelas</li>
-                            <li>Foto barang valid</li>
-                            <li>Barang yang akan dibarter legal dan sesuai ketentuan hukum</li>
-                            <li>Tidak diperbolehkan upload barang yang berpotensi berbahaya</li>
-                        </ul>
-                    </div>
+
+                <!-- Kategori Section -->
+                <div class="mb-4">
+                    <label for="category" class="block text-gray-700 font-medium">Kategori</label>
+                    <select class="form-select w-full p-2 border rounded-md" id="category" name="category" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="elektronik">Elektronik</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="perabot">Perabot</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- Kategori Section -->
-            <div class="form-section">
-             <div class="col-md-8">
-                 <label for="category" class="form-label">Kategori</label>
-                  <select class="form-select" id="category" name="category" required>
-                    <option value="">Pilih Kategori</option>
-                    <option value="elektronik">Elektronik</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="perabot">Perabot</option>
-                    <option value="lainnya">Lainnya</option>
-                  </select>
-              </div>
-            </div>
+                <!-- Tags Section -->
+                <div class="mb-4">
+                    <label for="tags" class="block text-gray-700 font-medium">Tags</label>
+                    <input type="text" class="form-control w-full p-2 border rounded-md" id="tags" name="tags" placeholder="Masukkan tags (misal: baru, murah, dll)">
+                </div>
 
-            <!-- Tags Section -->
-            <div class="form-section">
-              <div class="col-md-8">
-                 <label for="tags" class="form-label">Tags</label>
-                 <input type="text" class="form-control" id="tags" name="tags" placeholder="Masukkan tags (misal: baru, murah, dll)">
-              </div>
-            </div>
+                <!-- Deskripsi Section -->
+                <div class="mb-4">
+                    <label for="description" class="block text-gray-700 font-medium">Deskripsi</label>
+                    <textarea class="form-control w-full p-2 border rounded-md" id="description" name="description" rows="5" placeholder="Masukkan deskripsi produk" required></textarea>
+                </div>
 
-            <!-- Deskripsi Section -->
-            <div class="form-section">
-             <div class="col-md-8">
-                 <label for="description" class="form-label">Deskripsi</label>
-                 <textarea class="form-control wide-textarea" id="description" name="description" rows="5" placeholder="Masukkan deskripsi produk" required></textarea>
-             </div>
-            </div>
+                <!-- Upload Screenshot Section -->
+                <div class="mb-4">
+                    <label for="screenshots" class="block text-gray-700 font-medium">Tambah Screenshot (Max 12, Spesifikasi Ukurannya)</label>
+                    <input type="file" class="form-control w-full p-2 border rounded-md" id="screenshots" name="screenshots[]" accept="image/*" multiple>
+                    <small class="text-gray-500">Maksimum 12 gambar, ukuran gambar disarankan tidak lebih dari 5MB.</small>
+                </div>
 
-            <!-- Upload Screenshot Section -->
-            <div class="form-section">
-              <div class="col-md-8">
-                 <label for="screenshots" class="form-label">Tambah Screenshot (Max 12, Spesifikasi Ukurannya)</label>
-                 <input type="file" class="form-control" id="screenshots" name="screenshots[]" accept="image/*" multiple>
-                 <small class="form-text text-muted">Maksimum 12 gambar, ukuran gambar disarankan tidak lebih dari 5MB.</small>
-              </div>
-            </div>
+                <!-- Kota Section -->
+                <div class="mb-4">
+                    <label for="city" class="block text-gray-700 font-medium">Kota</label>
+                    <input type="text" class="form-control w-full p-2 border rounded-md" id="city" name="city" placeholder="Masukkan nama kota" required>
+                </div>
 
-            <!-- Kota Section -->
-            <div class="form-section">
-              <div class="col-md-8">
-                  <label for="city" class="form-label">Kota</label>
-                  <input type="text" class="form-control" id="city" name="city" placeholder="Masukkan nama kota" required>
-              </div>
-            </div>
+                <!-- Kondisi Section -->
+                <div class="mb-4">
+                    <label for="condition" class="block text-gray-700 font-medium">Kondisi</label>
+                    <select class="form-select w-full p-2 border rounded-md" id="condition" name="condition" required>
+                        <option value="">Pilih Kondisi</option>
+                        <option value="baru">Baru</option>
+                        <option value="bekas">Bekas</option>
+                    </select>
+                </div>
 
-            <!-- Kondisi Section -->
-            <div class="form-section">
-              <div class="col-md-8">
-                  <label for="condition" class="form-label">Kondisi</label>
-                  <select class="form-select" id="condition" name="condition" required>
-                     <option value="">Pilih Kondisi</option>
-                     <option value="baru">Baru</option>
-                     <option value="bekas">Bekas</option>
-                  </select>
-              </div>
-            </div>
-            
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <button type="submit" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-600">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
 
-            <!-- Submit Button -->
-            <div class="form-section">
-                <button type="submit" class="btn btn-custom">Upload</button>
-            </div>
-        </form>
+        <!-- Kolom Informasi -->
+        <div class="w-1/5 p-6 bg-gray-200 rounded-md shadow-md">
+            <h5 class="text-lg font-semibold mb-4">Aturan Upload Barang:</h5>
+            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li>Deskripsi jelas</li>
+                <li>Foto barang valid</li>
+                <li>Barang yang akan dibarter legal dan sesuai ketentuan hukum</li>
+                <li>Tidak diperbolehkan upload barang yang berpotensi berbahaya</li>
+            </ul>
+        </div>
     </div>
+</div>
+
 
     <!-- Menyertakan Footer -->
     @include('partials.footer')

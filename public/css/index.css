@@ -63,32 +63,38 @@ height: 20px;
  align-items: center;
 }
 
-/* Tombol Jual */
-/* Tombol Jual */
-.btn-jual {
-background-color: #CEBC88;  /* Warna latar belakang tombol default */
-color: #fff;
-padding: 10px 15px; /* Mengurangi padding agar tombol lebih ramping */
-border: none;
-border-radius: 15px;
-margin-right: 5px;
-cursor: pointer;
-display: flex; /* Membuat elemen di dalam tombol sejajar */
-align-items: center; /* Menyusun ikon dan teks agar sejajar secara vertikal */
-width: auto; /* Lebar otomatis sesuai dengan konten di dalamnya */
-max-width: 150px; /* Atur batas maksimum lebar tombol jika diperlukan */
-font-size: 16px; /* Mengatur ukuran font agar sesuai */
+/* Tombol barang */
+  .btn-barang {
+    background-color: #CEBC88;  /* Warna latar belakang tombol default */
+    color: #fff;               /* Warna teks */
+    padding: 10px 15px;        /* Padding tombol */
+    border: none;
+    border-radius: 15px;       /* Membuat tombol melengkung */
+    margin-right: 10px;
+    cursor: pointer;
+    display: flex;             /* Flexbox untuk elemen di dalam tombol */
+    align-items: center;       /* Sejajarkan ikon dan teks secara vertikal */
+    width: auto;               /* Sesuaikan lebar tombol dengan kontennya */
+    max-width: 150px;          /* Batas maksimum lebar tombol */
+    font-size: 16px;           /* Ukuran font */
+    transition: all 0.3s ease; /* Transisi halus untuk hover */
+}
+.btn-barang:hover {
+  background-color: #B8A46A; /* Warna latar belakang saat hover */
+  color: #f8f8f8;           /* Warna teks saat hover */
+  transform: scale(1.05);   /* Sedikit perbesar tombol */
 }
 
-/* Ikon pada tombol Jual */
-.btn-jual .search-icon {
+/* Ikon pada tombol barang */
+.btn-barang .search-icon {
 width: 25px; /* Ukuran ikon disesuaikan */
 height: 25px;
 margin-right: 10px; /* Memberi jarak antara ikon dan teks */
+margin-left: 5px; /* Memberi jarak antara ikon dan teks */
 }
 
 /* Mengubah warna tombol ketika kelas 'active' ditambahkan */
-.btn-jual.active {
+.btn-barang.active {
 background-color: #9E4749;  /* Warna latar belakang merah ketika tombol aktif */
 color: #fff; /* Warna teks tetap putih */
 }
@@ -101,12 +107,22 @@ color: #fff; /* Warna teks tetap putih */
 .map-icon {
  width: 35px;
  margin-right: 5px;
+ margin-top: 4px;
+}
+.map-icon:hover {
+  color: #f8f8f8;           /* Warna teks saat hover */
+  transform: scale(1.05);   /* Sedikit perbesar tombol */
 }
 
 /* New Message Icon */
 .message-icon {
  width: 35px;
  margin-right: 8px;  /* Memberi jarak antara map dan ikon login */
+ margin-top: 4px;
+}
+.message-icon:hover {
+  color: #f8f8f8;           /* Warna teks saat hover */
+  transform: scale(1.05);   /* Sedikit perbesar tombol */
 }
 
 /* Dropdown Menu */
@@ -149,8 +165,27 @@ color: #fff; /* Warna teks tetap putih */
 }
 
 .dropdown:hover .dropdown-content {
- display: block;
+ display: block
 }
+.dropdown-menu {
+  position: absolute; /* atau relative, sesuai struktur Anda */
+  z-index: 1050; /* Pastikan lebih tinggi dari peta */
+  background: #CEBC88; /* Opsional: untuk memastikan dropdown terlihat jelas */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Opsional: untuk estetika */
+}
+.dropdown-link {
+  display: block;
+  padding: 10px 15px; /* Tambahkan jarak */
+  text-decoration: none; /* Hilangkan garis bawah */
+  color: #333; /* Warna teks */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transisi lembut */
+}
+
+.dropdown-link:hover {
+  background-color: #e2e8f0; /* Warna abu-abu muda (Tailwind bg-gray-200) */
+  color: #1a202c; /* Warna teks abu-abu tua (Tailwind text-gray-800) */
+}
+
 
 /* Hero Section */
 .hero {

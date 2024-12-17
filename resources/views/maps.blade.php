@@ -6,16 +6,19 @@
     <title>Barterin Maps</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    @vite(['public/css/app.css', 'resources/js/app.js'])
+
     <style>
         #map {
             height: 500px;
             width: 100%;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
     @include('partials.navbar') 
-    @include('partials.sidebar')
+
 
     <div id="map"></div>
 

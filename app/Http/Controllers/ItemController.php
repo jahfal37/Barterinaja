@@ -14,7 +14,15 @@ class ItemController extends Controller
         $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(10)->get(); // Mengambil 10 item terbaru
         $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(10)->get();
 
-        return view('welcome', compact('items','popular_items'));
+        return view('index', compact('items','popular_items'));
+    }
+
+    public function user()
+    {
+        $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(10)->get(); // Mengambil 10 item terbaru
+        $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(10)->get();
+
+        return view('user.dashboard', compact('items','popular_items'));
     }
 
     public function store(Request $request)
@@ -57,11 +65,11 @@ class ItemController extends Controller
 
     public function show($id)
     {
-        $item = Item::findOrFail($id); // Cari item berdasarkan ID
-        $item->increment('views');
+        $items = Item::findOrFail($id); // Cari item berdasarkan ID
+        $items->increment('views');
         $related_items = Item::where('id', '!=', $id)->take(8)->get(); // Ambil item terkait
 
-        return view('item.show', compact('item', 'related_items'));
+        return view('item.show', compact('items', 'related_items'));
     }
 
 

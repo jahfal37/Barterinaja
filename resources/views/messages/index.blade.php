@@ -3,167 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan & Chat</title>
+    <title>Pilih Username dan Kirim Pesan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css">
+    @vite(['public/css/app.css', 'resources/js/app.js'])
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f9f9f9;
-        }
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-        .sidebar {
-            width: 25%;
-            background: #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #ccc;
-        }
-        .tab {
-            flex: 1;
+        /* Styling untuk Heading */
+        h2 {
             text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            background: #f1f1f1;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff; /* Sesuaikan dengan warna navbar dan footer */
+            margin-top: 30px;
         }
-        .tab.active {
-            background: white;
-            border-bottom: 2px solid red;
+
+        /* Styling untuk card user */
+        .user-card {
+            background-color: #212529; /* Warna latar belakang kartu sesuai dengan navbar/footer */
+            border: 1px solid #444;  /* Warna border lebih gelap untuk efek */
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s;
         }
-        .content {
-            display: none;
-            padding: 10px;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .content.active {
-            display: block;
-        }
-        .chat-area {
-            width: 75%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid #ccc;
-        }
-        .chat-header, .chat-footer {
-            background: #f1f1f1;
-            padding: 10px;
-        }
-        .chat-body {
-            flex-grow: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-        .list-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        .list-item:hover {
-            background: #eaeaea;
-        }
-        .profile-icon {
-            width: 40px;
-            height: 40px;
-            background: #666;
+
+        /* Styling untuk Button */
+        .user-card button {
+            background-color: #CEBC88; /* Warna tombol biru sesuai navbar */
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-right: 10px;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
+        .user-card button:hover {
+            background-color: #f7c12c; /* Efek hover tombol */
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 576px) {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .user-card {
+                padding: 15px;
+            }
+        }
+        /* Styling untuk kontainer utama */
+        .container {
+            background-color:rgb(255, 255, 255); /* Warna background utama sesuai dengan navbar/footer */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Styling untuk kolom user */
+        .col-md-4 {
+            margin-bottom: 15px;
+        }
+
+        /* Styling untuk teks yang lebih terang */
+        h5 {
+            color: #fff; /* Warna teks nama user lebih terang */
+            font-size: 1.2rem;
+        }
+
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     @include('partials.navbar')
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Tabs -->
-            <div class="tabs">
-                <div class="tab active" onclick="openTab(event, 'produk')">Produk</div>
-                <div class="tab" onclick="openTab(event, 'chat')">Chat</div>
-            </div>
+    <!-- Title Section -->
+    <h2>Pilih Username untuk Mengirim Pesan</h2>
 
-            <!-- Produk Content -->
-            <div id="produk" class="content active">
-                @foreach ($products as $product)
-                    <div class="list-item">
-                        <div class="profile-icon">P</div>
-                        <div>
-                            <strong>{{ $product['name'] }}</strong><br>
-                            <small>{{ $product['seller'] }}</small>
-                        </div>
+    <!-- User List Section -->
+    <div class="container mt-4">
+    <div class="row">
+        @foreach ($users as $user)
+            @if ($user->role === 'user')
+                <div class="col-md-4 mb-4">
+                    <div class="user-card">
+                        <h5>{{ $user->name }}</h5>
+                        <a href="{{ route('messages.chat', $user->id) }}">
+                            <button class="btn btn-custom">Kirim Pesan</button>
+                        </a>
                     </div>
-                @endforeach
-            </div>
-
-            <!-- Chat Content -->
-            <div id="chat" class="content">
-                @foreach ($chats as $chat)
-                    <div class="list-item">
-                        <div class="profile-icon">C</div>
-                        <div>
-                            <strong>{{ $chat->username }}</strong><br>
-                            <small>{{ Str::limit($chat->content, 30) }}</small>
-                        </div>
-                    </div>
-                @endforeach
-                <button class="btn btn-custom" style="margin: 10px;">Muat Lainnya</button>
-            </div>
-        </div>
-
-        <!-- Chat Area -->
-        <div class="chat-area">
-            <div class="chat-header">
-                <strong>@namaakuntoko</strong>
-            </div>
-            <div class="chat-body" style="overflow-y: auto; height: 300px;">
-                @foreach ($messages as $message)
-                    <div style="margin: 10px; text-align: {{ $message->sender_id == Auth::id() ? 'right' : 'left' }};">
-                        <div style="display: inline-block; background: {{ $message->sender_id == Auth::id() ? '#d1e7dd' : '#f8d7da' }}; padding: 10px; border-radius: 5px;">
-                          <small>{{ $message->content }}</small><br>
-                           <small style="font-size: 10px; color: gray;">{{ $message->created_at->format('H:i') }}</small>
-                        </div>
-                   </div>
-                @endforeach
-            </div>
-
-            <form action="{{ route('messages.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="receiver_id" value="{{ $receiver_id }}">
-                <input type="text" name="content" placeholder="Tulis pesan..." required>
-                <button type="submit">Kirim</button>
-            </form>
-       </div>
+                </div>
+            @endif
+        @endforeach
     </div>
+</div>
 
-    <!-- Footer -->
+
     @include('partials.footer')
-
-    <script>
-        function openTab(evt, tabName) {
-            let contents = document.querySelectorAll('.content');
-            let tabs = document.querySelectorAll('.tab');
-
-            contents.forEach(content => content.classList.remove('active'));
-            tabs.forEach(tab => tab.classList.remove('active'));
-
-            document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
-    </script>
 </body>
 </html>

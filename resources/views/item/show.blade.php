@@ -1,54 +1,174 @@
-<!-- resources/views/item/show.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ $item->product_name }} - Item Detail</title>
-  <link rel="stylesheet" href="css/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $items->product_name }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />   
+    @vite(['public/css/app.css', 'resources/js/app.js'])
+    <style>
+        .gray-background {
+            background-color: #f0f0f0;
+        }
+
+        .store-account {
+            position: absolute;
+            top: 10%;
+            left: 75%;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .store-logo {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .grid-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .item-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-  <!-- Include Navbar -->
-  @include('partials.navbar')
+    <!-- Include Navbar -->
+    @include('partials.navbar')
 
-  <div class="container">
-    <div class="item-detail">
-      <h1 class="item-title">{{ $item->product_name }}</h1>
-      <p class="item-category">Category: {{ $item->category }}</p>
-      <p class="item-city">City: {{ $item->city }}</p>
-      <p class="item-condition">Condition: {{ $item->condition }}</p>
-      
-      <div class="item-description">
-        <h3>Description:</h3>
-        <p>{{ $item->description }}</p>
-      </div>
+     <!-- Product and Store Information Section -->
+<div class="container position-relative">
+    <div class="row">
+        <!-- Product Image Section (3/4) -->
+        <div class="col-md-9">
+            <div class="product">
+                @if (optional($items->screenshots->isNotEmpty()))
+                    <!-- Tampilkan gambar pertama dari screenshot -->
+                    <img src="{{ asset('storage/' . $items->screenshots->first()->path) }}" alt="{{ $items->product_name }}" class="img-fluid product-image">
+                @else
+                    <!-- Gambar default jika tidak ada screenshot -->
+                    <img src="/images/default_item.png" alt="{{ $items->product_name }}" class="img-fluid product-image">
+                @endif
 
-      <!-- Menampilkan pemilik item -->
-      <div class="item-user">
-        <h3>Owner: {{ $item->user->username }}</h3>
-        <p>Email: {{ $item->user->email }}</p>
-      </div>
-
-      <!-- Menampilkan screenshot -->
-      @if ($item->screenshots->isNotEmpty())
-        <div class="item-images">
-          <h3>Screenshots:</h3>
-          @foreach ($item->screenshots as $screenshot)
-            <img src="{{ asset('storage/' . $screenshot->path) }}" alt="Screenshot" class="item-image">
-          @endforeach
+                <!-- Overlay untuk nama barang -->
+                <div class="product-overlay">
+                    <div class="text-overlay">
+                        <h2>{{ $items->product_name }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
-      @else
-        <p>No screenshots available.</p>
-      @endif
 
-      <div class="item-actions">
-        <a href="#" class="btn btn-buy">Buy Now</a>
-        <a href="{{ route('item.edit', $item->id) }}" class="btn btn-edit">Edit Item</a>
-      </div>
+        <!-- Store Account Section (1/4) -->
+        <div class="col-md-3">
+            <div class="store-account">
+                <p><strong>Nama Akun Toko</strong></p>
+                <a href="{{ route('account', $items->user_id) }}" style="text-decoration: none; color: inherit;">
+                    @if ($items->user->profile_picture)
+                        <img src="{{ asset('storage/' . $items->user->profile_picture) }}" alt="Logo Toko" class="store-logo">
+                    @else
+                        <img src="/images/akun.png" alt="Default Profile Picture" class="store-logo">
+                    @endif
+                    <p>{{ $items->user->store_name ?? 'Toko Tidak Bernama' }}</p>
+                    <p>Total Rating:</p>
+                    <p>0/10</p>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- Include Footer -->
-  @include('partials.footer')
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-12">
+                <div class="p-3 border mb-3 gray-background">
+                    <h3>Deskripsi</h3>
+                    <p>{{ $items->description ?? 'Tidak ada deskripsi untuk barang ini.' }}</p>
+                </div>
+                <div class="p-3 border gray-background">
+                    <h3>Lokasi / Maps</h3>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+ <!-- Other Items Section -->
+<div class="mt-5">
+    <h4>Item Lain</h4>
+    <div class="grid">
+        @foreach ($related_items as $related_item)
+            <div class="grid-item">
+                <a href="{{ route('item.show', $related_item->id) }}" style="text-decoration: none; color: inherit;">
+                    @if ($related_item->screenshots->isNotEmpty())
+                        <!-- Tampilkan gambar pertama dari screenshot -->
+                        <img src="{{ asset('storage/' . $related_item->screenshots->first()->path) }}" alt="{{ $related_item->product_name }}" class="img-fluid related-item-image">
+                    @else
+                        <!-- Gambar default jika tidak ada screenshot -->
+                        <img src="/images/default_item.png" alt="{{ $related_item->product_name }}" class="img-fluid related-item-image">
+                    @endif
+                    <div class="item-info">
+                    <p class="item-name">{{ $related_item->product_name }}</p>
+                    <p class="item-rating">⭐⭐⭐⭐⭐</p>
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+
+    <!-- Script untuk API Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inisialisasi peta dengan lokasi default
+        const map = L.map('map').setView([-0.9148, 100.4582], 13); // Padang sebagai fallback
+
+        // Tambahkan tile dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Tambahkan marker di lokasi barang
+        L.marker([{{ $items->latitude ?? '-0.9148' }}, {{ $items->longitude ?? '100.4582' }}]).addTo(map)
+            .bindPopup('Lokasi Barang')
+            .openPopup();
+    </script>
+    
+    <!-- Include Footer -->
+    @include('partials.footer')
 </body>
 </html>

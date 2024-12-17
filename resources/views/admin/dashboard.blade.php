@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,25 +24,32 @@
         <!-- Main Content -->
         <main class="flex-grow p-6 bg-gray-200">
             @yield('content')
+ 
+    
+
 <div class="container mx-auto p-max bg-white">
     <h1 class="text-3xl font-bold text-[#23292B] mb-8">Dashboard</h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div class="bg-[white] p-6 rounded-lg shadow-md hover:bg-gray-50">
+        <!-- Total Postingan -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL POSTINGAN</h2>
-            <p class="text-2xl font-bold text-[#23292B]">5</p>
+            <p class="text-2xl font-bold text-[#23292B]">{{ $kiw->count()}}</p>
         </div>
 
-        <div class="bg-[white] p-6 rounded-lg shadow-md hover:bg-gray-50">
+        <!-- Total Pengguna -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL PENGGUNA</h2>
-            <p class="text-2xl font-bold text-[#23292B]">50</p>
+            <p class="text-2xl font-bold text-[#23292B]"></p>
         </div>
 
-        <div class="bg-[white] p-6 rounded-lg shadow-md hover:bg-gray-50">
+        <!-- Total Transaksi -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL TRANSAKSI</h2>
-            <p class="text-2xl font-bold text-[#23292B]">20</p>
+            <p class="text-2xl font-bold text-[#23292B]"></p>
         </div>
     </div>
 </div>
+
 
 
 
