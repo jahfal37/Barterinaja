@@ -58,7 +58,7 @@
         }
         /* Styling untuk kontainer utama */
         .container {
-            background-color:rgb(255, 255, 255); /* Warna background utama sesuai dengan navbar/footer */
+    
             padding: 20px;
             border-radius: 10px;
         }

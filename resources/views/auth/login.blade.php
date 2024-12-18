@@ -8,9 +8,16 @@
     @vite(['public/css/app.css', 'resources/js/app.js'])
     <title>Login</title>
     <style>
-        body {
+        /* Reset Default */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: Arial, sans-serif;
+        }
+
+        /* Body Background */
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,16 +26,20 @@
             background-size: cover;
         }
 
+        /* Main Container */
         .container {
             display: flex;
-            width: 80%;
-            height: 70%;
-            border-radius: 10px;
+            width: 800px;
+            height:500px;
+            border-radius: 25px;
+            background: #fff;
             overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Gambar Sebelah Kiri */
         .left-side {
-            flex: 2;
+            flex: 1.2;
             background: url('/images/bglogin.png') no-repeat center center;
             background-size: cover;
             display: flex;
@@ -36,13 +47,19 @@
             justify-content: center;
         }
 
+        .left-side img {
+            width: 65%;
+            height: auto;
+        }
+
+        /* Form Sebelah Kanan */
         .right-side {
             flex: 1;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background-color: white;
-            padding: 20px;
+            justify-content: center;
+            padding: 30px;
+            background-color: #fff;
         }
 
         .form-container {
@@ -52,16 +69,26 @@
 
         .form-container h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 45px;
+            font-size: 1.8rem;
             color: grey;
         }
 
-        .form-container input {
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 20px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
             font-size: 1rem;
         }
 
@@ -69,59 +96,41 @@
             width: 100%;
             padding: 10px;
             background-color: grey;
-            color: white;
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             font-size: 1rem;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .form-container button:hover {
-            background-color: #0056b3;
+            background-color: #333;
         }
 
-        .form-container .links {
+        .links {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
-        .form-container .links a {
+        .links a {
             color: grey;
             text-decoration: none;
         }
 
-        .form-container .links a:hover {
+        .links a:hover {
             text-decoration: underline;
         }
 
+        /* Alert Styling */
         .alert {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px 20px;
+            margin-bottom: 10px;
+            padding: 10px;
             border-radius: 5px;
-            color: white;
-            font-size: 1rem;
-            z-index: 1000;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            opacity: 1; /* Awalnya terlihat */
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Efek hilang */
-        }
-        .alert-success {
-            background-color: #4caf50; /* Hijau */
-        }
-        .alert-error {
-            background-color: #f44336; /* Merah */
-        }
-        .alert-close {
-            margin-left: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            color: white;
-        }
-        .alert-close:hover {
-            text-decoration: underline;
+            color: #fff;
+            font-size: 0.9rem;
+            background-color: #f44336;
+            text-align: center;
         }
     </style>
 </head>

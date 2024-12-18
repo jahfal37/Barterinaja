@@ -19,6 +19,8 @@ class Item extends Model
         'city',
         'condition',
         'user_id', // Menambahkan user_id ke dalam fillable
+        'latitude',
+        'longitude',
     ];
 
     // Relasi ke User

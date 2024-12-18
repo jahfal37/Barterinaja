@@ -31,22 +31,28 @@
     <h1 class="text-3xl font-bold text-[#23292B] mb-8">Dashboard</h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         <!-- Total Postingan -->
+         <a href="{{ route('admin.postingan') }}">
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL POSTINGAN</h2>
             <p class="text-2xl font-bold text-[#23292B]">{{$totalPostingan}}</p>
         </div>
+        </a>
 
         <!-- Total Pengguna -->
+         <a href="{{ route('admin.pengguna') }}">
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL PENGGUNA</h2>
             <p class="text-2xl font-bold text-[#23292B]">{{$totalPengguna}}</p>
         </div>
+        </a>
 
         <!-- Total Transaksi -->
+        <a href="{{ route('admin.postingan') }}">
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL TRANSAKSI</h2>
             <p class="text-2xl font-bold text-[#23292B]">{{$totalTransaksi}}</p>
         </div>
+        </a>
     </div>
 </div>
 

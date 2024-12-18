@@ -44,9 +44,9 @@ Route::get('/item/create', function () {
 })->name('itemcreate');
 
 // Route untuk menyimpan data barang
-Route::post('/save-item', [ItemController::class, 'store'])->name('saveItem');
-Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
-Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('item.edit');
+Route::post('/save-item', [ItemController::class, 'store'])->name('save.item');
+Route::get('/item/{product_name}', [ItemController::class, 'show'])->name('item.show');
+Route::get('/items/{product_name}/edit', [ItemController::class, 'edit'])->name('item.edit');
 Route::get('/index', [ItemController::class, 'index'])->name('index');
 Route::get('/user/dashboard', [ItemController::class, 'user'])->name('user.dashboard');
 Route::prefix('admin')->group(function () {
@@ -61,7 +61,7 @@ Route::prefix('admin')->group(function () {
     // Tampilkan form edit pengguna
     Route::get('/{username}/edit', [UserDataController::class, 'edit'])->name('admin.user_edit');
     // Proses update pengguna
-    Route::put('/{username}', [UserDataController::class, 'update'])->name('admin.user_update');
+    Route::put('/{username}/update', [UserDataController::class, 'update'])->name('admin.user_update');
     // Tampilkan daftar barang
     Route::get('/item/{product_name}', [PostController::class, 'show'])->name('admin.item_detail');
     Route::get('/item/{product_name}/edit', [PostController::class, 'edit'])->name('admin.item_edit');

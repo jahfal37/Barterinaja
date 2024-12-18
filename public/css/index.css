@@ -214,7 +214,7 @@ color: #fff; /* Warna teks tetap putih */
 }
 
 /* Banner Styling */
-.banner {
+.banner_ {
  background-image: url('/images/banner.png'); /* Path ke gambar banner */
  background-size: cover; /* Gambar memenuhi seluruh div */
  background-position: center; /* Gambar di tengah */
@@ -379,14 +379,25 @@ border-radius: 5px;
 }
 
 .item-info {
-position: absolute; /* Overlay berada di atas gambar */
-bottom: 10px;
-left: 10px;
-right: 10px;
+position: absolute; 
+bottom: 8px;
+left: 8px;
+right: 8px;
 color: #fff;
 background-color: rgba(0, 0, 0, 0.8);
 border-radius: 4px;
-padding: 10px;
+padding: 5px;
+text-align: center;
+}
+.item-date {
+position: absolute; 
+bottom: 8px;
+left: 8px;
+right: 8px;
+color: #fff;
+background-color: rgba(0, 0, 0, 0.8);
+border-radius: 4px;
+padding: 5px;
 text-align: center;
 }
 
@@ -507,6 +518,7 @@ margin-bottom: 10px;
 .aboutus-logo img {
 max-width: 150px; /* Ukuran maksimal logo */
 margin: 20px 0; /* Jarak antara logo dan teks */
+content: center;
 }
 
 /*tambah barang */

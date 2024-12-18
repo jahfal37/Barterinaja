@@ -42,45 +42,39 @@ class UserDataController extends Controller
     /**
      * Memperbarui data user.
      */
-    public function update(Request $request, $username)
-    {
-        // Validasi input dari form
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $username,
-            'password' => 'nullable|string|min:8',
-            'store_name' => 'nullable|string|max:255',
-            'contact_number' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:users,email,' . $username,
-            'status' => 'required|in:aktif,non-aktif',
-        ]);
+    public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
 
-        // Cari user berdasarkan username
-        $user = User::where('username', $username)->firstOrFail();
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+        'password' => 'nullable|string|min:8',
+        'store_name' => 'nullable|string|max:255',
+        'contact_number' => 'nullable|string|max:255',
+        'bio' => 'nullable|string',
+        'city' => 'nullable|string|max:255',
+        'email' => 'nullable|email|max:255|unique:users,email,' . $user->id,
+        'status' => 'required|in:aktif,non-aktif',
+    ]);
 
-        // Update data user
-        $user->name = $request->name;
-        $user->username = $request->username;
+    $user->name = $request->name;
+    $user->username = $request->username;
 
-        // Hanya update password jika diisi
-        if ($request->filled('password')) {
-            $user->password = $request->password;
-        }
-
-        $user->store_name = $request->store_name;
-        $user->contact_number = $request->contact_number;
-        $user->bio = $request->bio;
-        $user->city = $request->city;
-        $user->email = $request->email;
-        $user->status = $request->status;
-
-        // Simpan perubahan
-        $user->save();
-
-        // Redirect ke halaman sebelumnya dengan pesan sukses
-        return redirect()->route('admin.pengguna')->with('success', 'User berhasil diperbarui.');
-
+    if ($request->filled('password')) {
+        $user->password = $request->password;
     }
+
+    $user->store_name = $request->store_name;
+    $user->contact_number = $request->contact_number;
+    $user->bio = $request->bio;
+    $user->city = $request->city;
+    $user->email = $request->email;
+    $user->status = $request->status;
+
+    $user->save();
+
+    return redirect()->route('admin.pengguna')->with('success', 'User berhasil diperbarui.');
+}
+
 }

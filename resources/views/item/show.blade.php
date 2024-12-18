@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $items->product_name }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     @vite(['public/css/app.css', 'resources/js/app.js'])
     <style>
         .gray-background {
@@ -61,53 +63,76 @@
             height: auto;
             border-radius: 10px;
         }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+        }
     </style>
 </head>
+
 <body>
     <!-- Include Navbar -->
     @include('partials.navbar')
 
-     <!-- Product and Store Information Section -->
-<div class="container position-relative">
-    <div class="row">
-        <!-- Product Image Section (3/4) -->
-        <div class="col-md-9">
-            <div class="product">
-                @if (optional($items->screenshots->isNotEmpty()))
+    <!-- Product and Store Information Section -->
+    <div class="container position-relative">
+        <div class="row">
+            <!-- Product Image Section (3/4) -->
+            <div class="col-md-9">
+                <div class="product">
+                    @if (optional($items->screenshots->isNotEmpty()))
                     <!-- Tampilkan gambar pertama dari screenshot -->
                     <img src="{{ asset('storage/' . $items->screenshots->first()->path) }}" alt="{{ $items->product_name }}" class="img-fluid product-image">
-                @else
+                    @else
                     <!-- Gambar default jika tidak ada screenshot -->
                     <img src="/images/default_item.png" alt="{{ $items->product_name }}" class="img-fluid product-image">
-                @endif
+                    @endif
 
-                <!-- Overlay untuk nama barang -->
-                <div class="product-overlay">
-                    <div class="text-overlay">
-                        <h2>{{ $items->product_name }}</h2>
+                    <!-- Overlay untuk nama barang -->
+                    <div class="product-overlay">
+                        <div class="text-overlay">
+                            <h2>{{ $items->product_name }}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Store Account Section (1/4) -->
-        <div class="col-md-3">
-            <div class="store-account">
-                <p><strong>Nama Akun Toko</strong></p>
-                <a href="{{ route('account', $items->user_id) }}" style="text-decoration: none; color: inherit;">
-                    @if ($items->user->profile_picture)
+            <!-- Store Account Section (1/4) -->
+            <div class="col-md-3">
+                <div class="store-account">
+                    <p><strong>{{ $items->user->name }}</strong></p>
+                    <a href="{{ route('account', $items->user_id) }}" style="text-decoration: none; color: inherit; ">
+                        @if ($items->user->profile_picture)
                         <img src="{{ asset('storage/' . $items->user->profile_picture) }}" alt="Logo Toko" class="store-logo">
-                    @else
+                        @else
                         <img src="/images/akun.png" alt="Default Profile Picture" class="store-logo">
-                    @endif
-                    <p>{{ $items->user->store_name ?? 'Toko Tidak Bernama' }}</p>
-                    <p>Total Rating:</p>
-                    <p>0/10</p>
-                </a>
+                        @endif
+                        <p>{{ $items->user->store_name ?? 'Toko Tidak Bernama' }}</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Main Content -->
     <div class="container mt-4">
@@ -125,50 +150,54 @@
             </div>
         </div>
 
- <!-- Other Items Section -->
-<div class="mt-5">
-    <h4>Item Lain</h4>
-    <div class="grid">
-        @foreach ($related_items as $related_item)
-            <div class="grid-item">
-                <a href="{{ route('item.show', $related_item->id) }}" style="text-decoration: none; color: inherit;">
-                    @if ($related_item->screenshots->isNotEmpty())
+        <!-- Other Items Section -->
+        <div class="mt-5 bg-gray-200">
+            <h4>Item Lain</h4>
+            <div class="grid">
+                @foreach ($related_items as $related_item)
+                <div class="grid-item bg-gray-200">
+                    <a href="{{ route('item.show', $related_item->id) }}" style="text-decoration: none; color: inherit;">
+                        @if ($related_item->screenshots->isNotEmpty())
                         <!-- Tampilkan gambar pertama dari screenshot -->
                         <img src="{{ asset('storage/' . $related_item->screenshots->first()->path) }}" alt="{{ $related_item->product_name }}" class="img-fluid related-item-image">
-                    @else
+                        @else
                         <!-- Gambar default jika tidak ada screenshot -->
                         <img src="/images/default_item.png" alt="{{ $related_item->product_name }}" class="img-fluid related-item-image">
-                    @endif
-                    <div class="item-info">
-                    <p class="item-name">{{ $related_item->product_name }}</p>
-                    <p class="item-rating">⭐⭐⭐⭐⭐</p>
-                    </div>
-                </a>
+                        @endif
+                        <div class="bg-blend-overlay  p-2 my-3">
+                            <p class="item-name">{{ $related_item->product_name }}</p>
+                            <p class="item-rating">Lokasi : {{ $related_item->city }}</p>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
-</div>
+        </div>
 
 
+        <script>
+    // Ambil data latitude dan longitude dari PHP
+    const latitude = {{ $items->latitude ?? '-0.9148' }};
+    const longitude = {{ $items->longitude ?? '100.4582' }};
 
-    <!-- Script untuk API Maps -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // Inisialisasi peta dengan lokasi default
-        const map = L.map('map').setView([-0.9148, 100.4582], 13); // Padang sebagai fallback
+    // Inisialisasi peta dengan lokasi default
+    const map = L.map('map').setView([latitude, longitude], 13);
 
-        // Tambahkan tile dari OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+    // Tambahkan tile dari OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-        // Tambahkan marker di lokasi barang
-        L.marker([{{ $items->latitude ?? '-0.9148' }}, {{ $items->longitude ?? '100.4582' }}]).addTo(map)
-            .bindPopup('Lokasi Barang')
-            .openPopup();
-    </script>
-    
-    <!-- Include Footer -->
-    @include('partials.footer')
+    // Tambahkan marker di lokasi barang
+    L.marker([latitude, longitude]).addTo(map)
+        .bindPopup('Lokasi Barang')
+        .openPopup();
+</script>
+
+        <footer>
+            <!-- Include Footer -->
+            @include('partials.footer')
+        </footer>
 </body>
+
 </html>

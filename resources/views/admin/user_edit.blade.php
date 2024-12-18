@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +29,7 @@
                     <h1 class="text-3xl font-bold text-[#23292B] mb-8">Edit Users</h1>
                     </div>
 
+                    <form action="{{ route('admin.user_update',$user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- Input Fields -->
@@ -46,11 +48,11 @@
                         </div>
                         <hr>
 
-                        <div class="flex justify-between my-4">
+                        <!-- <div class="flex justify-between my-4">
                             <p class="p-2"><b>Password</b></p>
                             <input type="password" name="password" class="border-2 p-2 w-2/3"
                                 placeholder="Kosongkan jika tidak ingin mengubah">
-                        </div>
+                        </div> -->
                         <hr>
 
                         <div class="flex justify-between my-4">

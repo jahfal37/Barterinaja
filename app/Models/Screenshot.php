@@ -14,6 +14,6 @@ class Screenshot extends Model
     // Relasi dengan model Item
     public function item()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(Item::class, 'item_id');
     }
 }

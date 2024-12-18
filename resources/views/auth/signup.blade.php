@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['public/css/app.css', 'resources/js/app.js'])
     <title>Sign Up</title>
     <style>
         body {
@@ -22,14 +21,14 @@
 
         .container {
             display: flex;
-            width: 80%;
-            height: 70%;
-            border-radius: 10px;
+            width: 800px;
+            height:500px;
+            border-radius: 30px;
             overflow: hidden;
         }
 
         .left-side {
-            flex: 2;
+            flex: 1.2;
             background: url('/images/bglogin.png') no-repeat center center;
             background-size: cover;
             display: flex;
@@ -58,21 +57,21 @@
         }
 
         .form-container input {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 20px;
             font-size: 1rem;
         }
 
         .form-container button {
-            width: 100%;
+            width: 95%;
             padding: 10px;
             background-color: grey;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             font-size: 1rem;
             cursor: pointer;
         }

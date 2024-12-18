@@ -103,23 +103,21 @@
     <!-- Banner Section -->
     
     <a href="{{ route('editAkun', $user->id) }}" class="card-link" style="text-decoration: none; color: inherit;">
-    <div class="container position-relative">
+    <div class="container position-relative bg-gray-200 my-4"><div class="mt-3 font-bold text-2xl ">
+    <h3>Deskripsi Akun</h3></div>
         <div class="store-info-container">
             <div class="store-description p-3 border mb-3 gray-background">
-                <h3>Deskripsi Akun</h3>
                 <p>{{ $user->bio ?? 'Belum ada deskripsi' }}</p>
             </div>
 
             <div class="store-account">
-                <p><strong>Nama Akun Toko</strong></p>
+                <p><strong>{{ $user->name }}</strong></p>
                 @if ($user->profile_picture)
                     <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="store-logo">
                 @else
                     <img src="/images/akun.png" alt="Default Profile Picture" class="store-logo">
                 @endif
                 <p>{{ $user->store_name ?? 'Belum ada nama toko' }}</p>
-                <p>Total Rating:</p>
-                <p>0/10</p>
             </div>
         </div>
     </div>
@@ -128,19 +126,18 @@
 
     <!-- Lokasi/Maps -->
     <div class="container mt-4">
-        <div class="p-3 border gray-background">
+        <div class="container position-relative w-full">
             <h3>Lokasi / Maps</h3>
             <div id="map"></div>
         </div>
     </div>
 
-    <div class="container mt-5">
-    <h4>Barang yang Dijual</h4>
-    <div id="itemContainer" class="grid">
+    <div class="container mb-3"> <div class="text-center mt-3 font-bold text-2xl ">
+    <h4>Barang yang Ditawarkan</h4>        </div>
+    <div id="itemContainer" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
     @if (!empty($items) && count($items) > 0)
-        <div class="grid">
             @foreach ($items as $index => $item)
-                <div class="grid-item style="display: {{ $index < 8 ? 'block' : 'none' }}">
+                <div class="grid-item"style="display: {{ $index < 8 ? 'block' : 'none' }}">
                     <div class="item-image-wrapper">
                         @if (!empty($item->screenshots->first()))
                             <img src="{{ asset('storage/' . $item->screenshots->first()->path) }}" 
@@ -154,11 +151,11 @@
                     </div>
                     <div class="item-info">
                         <p class="item-name">{{ $item->product_name }}</p>
-                        <p class="item-rating">⭐⭐⭐⭐⭐</p>
+                        <p class="item-rating">Lokasi : {{ $item->city }}</p>
                     </div>
                 </div>
             @endforeach
-        </div>
+
     @else
         <p class="text-center">Tidak ada data barang yang tersedia.</p>
     @endif

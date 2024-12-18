@@ -6,21 +6,22 @@ use App\Models\Item;
 use App\Models\Screenshot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(10)->get(); // Mengambil 10 item terbaru
-        $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(10)->get();
+        $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(5)->get(); // Mengambil 5 item terbaru
+        $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(5)->get();
 
         return view('index', compact('items','popular_items'));
     }
 
     public function user()
     {
-        $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(10)->get(); // Mengambil 10 item terbaru
-        $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(10)->get();
+        $items = Item::with('screenshots')->orderBy('created_at', 'desc')->take(5)->get(); // Mengambil 5 item terbaru
+        $popular_items = Item::with('screenshots')->orderBy('views', 'desc')->take(5)->get();
 
         return view('user.dashboard', compact('items','popular_items'));
     }
@@ -36,6 +37,9 @@ class ItemController extends Controller
             'city' => 'required|string|max:255',
             'condition' => 'required|string|max:50',
             'screenshots.*' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:5120', // Max 5MB per gambar
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            
         ]);
 
         // Simpan item terlebih dahulu dan kaitkan dengan user yang sedang login
@@ -47,6 +51,8 @@ class ItemController extends Controller
             'city' => $request->city,
             'condition' => $request->condition,
             'user_id' => Auth::id(), // Menyimpan ID user yang sedang login
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         // Simpan screenshot jika ada
@@ -60,18 +66,17 @@ class ItemController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Item berhasil disimpan!');
+        return redirect('/user/dashboard')->with('success', 'Item berhasil disimpan!');
     }
 
     public function show($id)
     {
         $items = Item::findOrFail($id); // Cari item berdasarkan ID
         $items->increment('views');
-        $related_items = Item::where('id', '!=', $id)->take(8)->get(); // Ambil item terkait
+        $related_items = Item::where('id', '!=', $id)->take(5)->get(); // Ambil item terkait
 
         return view('item.show', compact('items', 'related_items'));
     }
-
 
 }
 

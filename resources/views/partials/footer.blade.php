@@ -1,4 +1,4 @@
-<footer class="bg-gradient-to-r from-[#1a1a1a] to-[#4e2a1f] text-white py-4 px-6 w-full">
+<footer class="bg-gradient-to-r from-[#1a1a1a] to-[#4e2a1f] text-white py-[0] px-6 w-full">
   <div class="container mx-auto flex flex-col lg:flex-row justify-between space-y-4 lg:space-y-0">
     <!-- Kategori Populer -->
     <div class="footer-column">
@@ -32,7 +32,7 @@
   </div>
   
   <!-- Copyright Section (Optional) -->
-  <div class="text-center mt-6 text-gray-400 text-sm">
+  <div class="text-center text-gray-400 text-sm">
     <p>&copy; {{ date('Y') }} Barterin. All Rights Reserved.</p>
   </div>
 </footer>
