@@ -42,13 +42,13 @@
                             </thead>
                             <tbody>
                                 @forelse($users as $user)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black font-medium ">
-                                    <td class="px-6 py-4 text-left">{{ $user->store_name }}</td>
-                                    <td class="px-6 py-4 text-left">{{ $user->name }}</td>
-                                    <td class="px-6 py-4 text-left">{{ $user->username }}</td>
-                                    <td class="px-6 py-4 text-left">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 text-left">{{ ucfirst($user->status) }}</td>
-                                    <td class="px-6 py-4 text-left">
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black font-medium text-left">
+                                    <td class="px-6 py-4">{{ $user->store_name }}</td>
+                                    <td class="px-6 py-4">{{ $user->name }}</td>
+                                    <td class="px-6 py-4">{{ $user->username }}</td>
+                                    <td class="px-6 py-4">{{ $user->email }}</td>
+                                    <td class="px-6 py-4">{{ ucfirst($user->status) }}</td>
+                                    <td class="px-6 py-4">
                                         <a href="{{ route('admin.user_edit', $user->username) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">
                                             Detail
                                         </a>
@@ -60,8 +60,6 @@
                                 </tr>
                                 @endforelse
                             </tbody>
-
-
                         </table>
 
                     </tbody>

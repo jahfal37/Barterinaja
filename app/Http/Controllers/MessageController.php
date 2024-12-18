@@ -20,23 +20,28 @@ class MessageController extends Controller
     public function chat($receiver_id)
     {
         $user = Auth::user();
-
-        $messages = Message::where(function($query) use ($user, $receiver_id) {
-            $query->where('sender_id', $user->id)
-                  ->where('receiver_id', $receiver_id);
-        })
-        ->orWhere(function($query) use ($user, $receiver_id) {
-            $query->where('sender_id', $receiver_id)
-                  ->where('receiver_id', $user->id);
-        })
-        ->orderBy('created_at', 'asc')
-        ->get();
-
+    
+        $receiver = User::findOrFail($receiver_id); // Ambil data penerima
+    
+        $messages = Message::with(['sender', 'receiver'])
+            ->where(function($query) use ($user, $receiver_id) {
+                $query->where('sender_id', $user->id)
+                      ->where('receiver_id', $receiver_id);
+            })
+            ->orWhere(function($query) use ($user, $receiver_id) {
+                $query->where('sender_id', $receiver_id)
+                      ->where('receiver_id', $user->id);
+            })
+            ->orderBy('created_at', 'asc')
+            ->get();
+    
         return view('messages.chat', [
             'messages' => $messages,
+            'receiver' => $receiver, // Kirim data penerima
             'receiver_id' => $receiver_id
         ]);
     }
+    
 
     // Menyimpan pesan baru
     public function store(Request $request)

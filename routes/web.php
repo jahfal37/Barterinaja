@@ -47,20 +47,13 @@ Route::get('/item/create', function () {
 Route::post('/save-item', [ItemController::class, 'store'])->name('saveItem');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.show');
 Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('item.edit');
-
-Route::middleware(['auth'])->group(function() {
-    Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
-    Route::get('messages/chat/{receiver_id}', [MessageController::class, 'chat'])->name('messages.chat');
-    Route::post('messages/store', [MessageController::class, 'store'])->name('messages.store');
-});
 Route::get('/index', [ItemController::class, 'index'])->name('index');
 Route::get('/user/dashboard', [ItemController::class, 'user'])->name('user.dashboard');
-Route::get('/admin/dashboard', [TestController::class, 'admin'])->name('admin.dashboard');
 Route::prefix('admin')->group(function () {
     // Tampilkan halaman dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'admin'])->name('admin.dashboard');
     // Tampilkan daftar postingan
-    Route::get('/postingan', [PostController::class, 'admin'])->name('admin.postingan');
+    Route::get('/postingan', [PostController::class, 'index'])->name('admin.postingan');
     // Tampilkan daftar pengguna
     Route::get('/pengguna', [UserDataController::class, 'index'])->name('admin.pengguna');
     // Tampilkan detail pengguna berdasarkan username
@@ -69,7 +62,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/{username}/edit', [UserDataController::class, 'edit'])->name('admin.user_edit');
     // Proses update pengguna
     Route::put('/{username}', [UserDataController::class, 'update'])->name('admin.user_update');
-});
+    // Tampilkan daftar barang
+    Route::get('/item/{product_name}', [PostController::class, 'show'])->name('admin.item_detail');
+    Route::get('/item/{product_name}/edit', [PostController::class, 'edit'])->name('admin.item_edit');
+    Route::put('/item/{product_name}/update', [PostController::class, 'update'])->name('admin.item_update');
+    Route::delete('/laporan/{product_name}/delete', [PostController::class, 'destroy'])->name('admin.item_delete');
+   });
 
 
 Route::get('/index', function () {
@@ -77,10 +75,14 @@ Route::get('/index', function () {
 })->name('index');
 
 
-
 // Middleware pengecekan role
 Route::middleware(\App\Http\Middleware\RedirectBasedOnRole::class)->group(function () {
     Route::get('/check-role', function () {
         return 'Redirecting based on role...';
     });
+});
+Route::middleware(['auth'])->group(function() {
+    Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages/chat/{receiver_id}', [MessageController::class, 'chat'])->name('messages.chat');
+    Route::post('messages/store', [MessageController::class, 'store'])->name('messages.store');
 });

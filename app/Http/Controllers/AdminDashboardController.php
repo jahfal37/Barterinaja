@@ -8,16 +8,17 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    public function admin()
-    {
+  public function admin()
+  {
       // Total postingan dari tabel items
-  
-    $kiw = Item::all();
-    
-    // Total pengguna dengan role 'user'
-    $totalPengguna = User::where('role', 'user')->count();
+      $totalPostingan = Item::count(); // Menghitung total postingan
+      
+      // Total pengguna dengan role 'user'
+      $totalPengguna = User::where('role', 'user')->count();
+      
+      // Total transaksi, disamakan dengan totalPostingan
+      $totalTransaksi = $totalPostingan;
 
-
-    return view('admin.dashboard', compact('kiw', 'totalPengguna'));
-    }
+      return view('admin.dashboard', compact('totalPostingan', 'totalPengguna', 'totalTransaksi'));
+  }
 }

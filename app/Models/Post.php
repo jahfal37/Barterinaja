@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-protected $table = 'posts';
-    protected $fillable = ['product_name', 'name', 'category', 'description'];
 
-    // Jika Anda ingin mendefinisikan hubungan antara model Post dan User
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'username', 'username');
-    }
+    // Nama tabel yang digunakan
+    protected $table = 'items';
+
+    // Kolom yang dapat diisi secara massal
+    protected $fillable = ['id', 'product_name', 'category', 'user_id','description','city','condition'];
+
+    // Relasi ke tabel users
+        public function user()
+        {
+            return $this->belongsTo(User::class, 'user_id');
+        }
 }

@@ -33,25 +33,22 @@
         <!-- Total Postingan -->
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL POSTINGAN</h2>
-            <p class="text-2xl font-bold text-[#23292B]">{{ $kiw->count()}}</p>
+            <p class="text-2xl font-bold text-[#23292B]">{{$totalPostingan}}</p>
         </div>
 
         <!-- Total Pengguna -->
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL PENGGUNA</h2>
-            <p class="text-2xl font-bold text-[#23292B]"></p>
+            <p class="text-2xl font-bold text-[#23292B]">{{$totalPengguna}}</p>
         </div>
 
         <!-- Total Transaksi -->
         <div class="bg-white p-6 rounded-lg shadow-md hover:bg-gray-50">
             <h2 class="text-gray-500 text-sm font-medium">TOTAL TRANSAKSI</h2>
-            <p class="text-2xl font-bold text-[#23292B]"></p>
+            <p class="text-2xl font-bold text-[#23292B]">{{$totalTransaksi}}</p>
         </div>
     </div>
 </div>
-
-
-
 
         </main>
     </div>

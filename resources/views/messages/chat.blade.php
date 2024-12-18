@@ -102,7 +102,7 @@
     @include('partials.navbar')
 
     <!-- Chat Header -->
-    <h2>Chat dengan {{ $receiver_id }}</h2>
+    <h2>Chat dengan {{ $receiver->name}}</h2>
 
     <!-- Chat Messages Section -->
     <div class="messages">

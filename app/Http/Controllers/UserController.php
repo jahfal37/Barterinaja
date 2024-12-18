@@ -43,15 +43,15 @@ class UserController extends Controller
         // Update data pengguna lainnya
         $user->store_name = $request->store_name;
         $user->username = $request->username;
-        
-         // Pastikan tidak ada perubahan pada email
+
+        // Pastikan tidak ada perubahan pada email
         $user->contact_number = $request->contact_number;
         $user->bio = $request->bio;
         $user->city = $request->city;
 
         // Update password jika ada perubahan
         if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+            $user->password = $request->password;
         }
 
         // Simpan perubahan

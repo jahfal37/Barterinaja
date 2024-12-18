@@ -18,14 +18,14 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Admin',
             'username' => 'admin',
-            'password' => ('password'),
+            'password' => ('admin'),
             'role' => 'admin',
         ]);
 
         User::create([
-            'name' => 'User 1',
+            'name' => 'User',
             'username' => 'user',
-            'password' =>('password'),
+            'password' =>('user1234'),
             'role' => 'user',
         ]);
         
