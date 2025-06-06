@@ -25,7 +25,7 @@
             </li>
             <!-- Laporan -->
             <li>
-                <a href="#" id="laporan" class=" container flex items-center h-12 bg-gray-800 px-4 m-1 hover:bg-red-900">
+                <a href="{{ route('report')}}"  id="laporan" class=" container flex items-center h-12 bg-gray-800 px-4 m-1 hover:bg-red-900">
                     Laporan
                 </a>
             </li>

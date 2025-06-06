@@ -40,11 +40,11 @@
     <div class="absolute inset-0 flex transition-transform duration-700"
          :style="'transform: translateX(-' + (currentSlide - 1) * 100 + '%);'">
       <!-- Slide 1 -->
-      <div class="min-w-full bg-cover bg-center " style="background-image: url('/images/banner2.png');"></div>
+      <div class="min-w-full bg-cover bg-center " style="background-image: url('/images/banner1.png');"></div>
       <!-- Slide 2 -->
-      <div class="min-w-full bg-cover bg-center" style="background-image: url('/images/banner1.png');"></div>
+      <div class="min-w-full bg-cover bg-center" style="background-image: url('/images/banner2.png');"></div>
       <!-- Slide 3 -->
-      <div class="min-w-full bg-cover bg-center" style="background-image: url('/images/item1.png');"></div>
+      <div class="min-w-full bg-cover bg-center" style="background-image: url('/images/banner3.png');"></div>
     </div>
 
     <!-- Navigation Controls -->
@@ -92,11 +92,14 @@
             <img src="/images/default-item.png" alt="No Image" class="item-image">
             @endif
           </div>
-          <div class=" container p-0 bg-white rounded-md font-poppins font-bold ">
-            <p class="">{{ $item->product_name }}</p>
-            <p class="">Lokasi : {{ $item->city }}</p> <!-- Tambahkan rating jika ada -->
-            <p class="">Added on: {{ $item->created_at->format('d M Y') }}</p>
-          </div>
+          <div class="p-4 text-align-left">
+                <h2 class="font-semibold text-lg truncate">{{ $item->product_name }}</h2>
+                <p class="text-sm text-gray-600">Lokasi: {{ $item->city }}</p>
+                <p class="text-sm text-gray-500">Added on: {{ $item->created_at->format('d M Y') }}</p>
+                @if(isset($item->views))
+                <p class="text-sm text-gray-500">{{ $item->views }} views</p>
+                @endif
+            </div>
         </a>
       </div>
       @empty
@@ -120,10 +123,14 @@
             <img src="/images/default_item.png" alt="Default Image" class="item-image">
             @endif
           </div>
-          <div class="container p-0 bg-white rounded-md font-poppins font-bold ">
-            <p class=" ">{{ $item->product_name }}</p>
-            <small>{{ $item->views }} views</small>
-          </div>
+          <div class="p-4 ">
+                <h2 class="font-semibold text-lg truncate">{{ $item->product_name }}</h2>
+                <p class="text-sm text-gray-600">Lokasi: {{ $item->city }}</p>
+                <p class="text-sm text-gray-500">Added on: {{ $item->created_at->format('d M Y') }}</p>
+                @if(isset($item->views))
+                <p class="text-sm text-gray-500">{{ $item->views }} views</p>
+                @endif
+            </div>
         </a>
       </div>
       @endforeach

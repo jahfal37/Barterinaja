@@ -12,11 +12,11 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ReportController;
 
+
+// Route untuk Login    
 Route::get('/', [ItemController::class, 'index'])->name('index');
-
-// Route untuk Login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'handleLogin'])->name('login.submit');
 
@@ -33,8 +33,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/faq', [FAQController::class, 'index'])->name('faq');
 Route::get('/aboutus', [ABOUTUSController::class, 'index'])->name('aboutus');
-Route::get('/maps', [AuthController::class, 'maps'])->name('maps');
+Route::get('/maps', [ItemController::class, 'GetItems'])->name('maps');
+Route::get('/maps/view', [ItemController::class, 'maps'])->name('maps.view');
 Route::get('/item-page', [PageController::class, 'showItemPage']);
+//route item search
+Route::get('/search', [ItemController::class, 'search'])->name('item.search');
 
 // Menampilkan halaman tambah/edit barang
 Route::get('/akun', [AkunController::class, 'account'])->name('account');
@@ -42,6 +45,7 @@ Route::get('/akun', [AkunController::class, 'account'])->name('account');
 Route::get('/item/create', function () {
     return view('/item/create'); // Ganti dengan nama view form Anda
 })->name('itemcreate');
+
 
 // Route untuk menyimpan data barang
 Route::post('/save-item', [ItemController::class, 'store'])->name('save.item');
@@ -67,7 +71,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/item/{product_name}/edit', [PostController::class, 'edit'])->name('admin.item_edit');
     Route::put('/item/{product_name}/update', [PostController::class, 'update'])->name('admin.item_update');
     Route::delete('/laporan/{product_name}/delete', [PostController::class, 'destroy'])->name('admin.item_delete');
-   });
+    
+});
+Route::post('/report', [AuthController::class, 'store'])->name('report_store');
+Route::get('/report', [AuthController::class, 'showForm'])->name('report');
+Route::get('/reports', [AuthController::class, 'Formindex'])->name('report_index'); // Daftar laporan
 
 
 Route::get('/index', function () {
@@ -81,8 +89,12 @@ Route::middleware(\App\Http\Middleware\RedirectBasedOnRole::class)->group(functi
         return 'Redirecting based on role...';
     });
 });
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth'])->group(function () {
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/chat/{receiver_id}', [MessageController::class, 'chat'])->name('messages.chat');
     Route::post('messages/store', [MessageController::class, 'store'])->name('messages.store');
 });
+
+Route::delete('/laporan/{product_name}/delete', [PostController::class, 'destroy'])->name('admin.item_delete');
+//Category
+Route::get('/category/{category}', [ItemController::class, 'showByCategory'])->name('item.category');

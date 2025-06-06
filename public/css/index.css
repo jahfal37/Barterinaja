@@ -31,26 +31,35 @@ display: flex;
 align-items: center;
 background-color: #a2a2a0; /* Isi kotak dengan abu-abu */
 border: 3px solid #fff; /* Pinggiran putih */
-border-radius: 15px;
+border-radius: 10px;
 overflow: hidden; /* Menjaga agar gambar di dalam kotak tidak keluar */
-margin-right: 20px;
+margin-right: 25px;
 }
 
 .search-rectangle input {
-padding: 5px 10px;
-border: none;
-border-radius: 5px 0 0 5px;
-width: 180px; /* Menentukan lebar input */
-color: #fff; /* Tulisannya berwarna putih */
-background-color: transparent; /* Latar belakang input transparan */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  width: 180px; /* Menentukan lebar input */
+  color: #666d76; /* Tulisannya berwarna putih */
+  background-color: transparent; /* Latar belakang input transparan */
+  
+}
+/* Styling untuk placeholder */
+.search-rectangle input::placeholder {
+  color: #fdfdfd; /* Warna teks placeholder */
+  opacity: 1; /* Pastikan terlihat */
+  font-size: 14px; /* Ukuran font placeholder */
 }
 
+
 .search-button {
-background-color: transparent;
-border: none;
-padding: 5px;
-cursor: pointer;
-}
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  }
+  
 
 .search-icon {
 width: 20px;
@@ -154,19 +163,25 @@ color: #fff; /* Warna teks tetap putih */
  position: absolute;
  background-color: #CEBC88;
  min-width: 160px;
- z-index: 1;
+ z-index: 1100;
 }
 
 .dropdown-content a {
- color: #fff;
- padding: 12px 16px;
- text-decoration: none;
- display: block;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #f1f1f1;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+ background-color: #f1f1f1;
 }
 
 .dropdown:hover .dropdown-content {
- display: block
-}
+  display: block;}
+
 .dropdown-menu {
   position: absolute; /* atau relative, sesuai struktur Anda */
   z-index: 1050; /* Pastikan lebih tinggi dari peta */
@@ -598,7 +613,10 @@ font-size: 0.875rem;
 color: #6c757d;
 }
 
-
+.carousel-inner img {
+  max-height: 500px; /* Sesuaikan tinggi maksimal gambar */
+  object-fit: contain; /* Menjaga proporsi gambar */
+}
 
 
 

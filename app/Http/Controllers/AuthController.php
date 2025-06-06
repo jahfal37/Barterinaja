@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
-
-class AuthController
+use App\Models\Report;
+class AuthController extends Controller
 {
 public function handleLogin(Request $request)
 {
@@ -111,12 +111,42 @@ public function handleLogin(Request $request)
     }
 
     // Menampilkan halaman index
-    public function barang()
+    public function index()
     {
         return view('index');  // Pastikan Anda memiliki file 'index.blade.php' di resources/views
     }
-    public function maps()
+
+    public function showForm()
     {
-        return view('maps');  // Pastikan Anda memiliki file 'maps.blade.php' di resources/views
+        $reports = Report::all();
+        return view('report',compact('reports'));
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        Report::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => auth()->check() ? auth()->id() : null, // Add the authenticated user's ID or null if not authenticated
+        ]);
+    
+        return redirect()->route('report')->with('success', 'Laporan berhasil dikirim!');
+    }
+    
+//     public function Formindex()
+//     {
+//         $reports = Report::all();
+//         return view('form', compact('reports'));
+//     }
+//     Route::get('/reports', function () {
+//     return view('reports'); // ganti 'reports' dengan nama view Anda
+// })->middleware('auth')->name('reports_form');
+
+// Route::post('/reports/store', [ReportController::class, 'store'])->middleware('auth')->name('report_store');
+
 }

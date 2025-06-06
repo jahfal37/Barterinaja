@@ -15,17 +15,26 @@ class UserSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        User::create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'password' => ('admin'),
-            'role' => 'admin',
-        ]);
+        // Periksa apakah username 'admin' sudah ada
+        if (!User::where('username', 'admin')->exists()) {
+            User::create([
+                'name' => 'Admin',
+                'username' => 'admin',
+                'password' => ('admin'),
+                'role' => 'admin',
+            ]);
+        }
 
         User::create([
             'name' => 'User',
             'username' => 'user',
             'password' =>('user1234'),
+            'role' => 'user',
+        ]);
+        User::create([
+            'name' => 'jahfal',
+            'username' => 'jahfal',
+            'password' =>('123'),
             'role' => 'user',
         ]);
         

@@ -132,33 +132,36 @@
         </div>
     </div>
 
-    <div class="container mb-3"> <div class="text-center mt-3 font-bold text-2xl ">
-    <h4>Barang yang Ditawarkan</h4>        </div>
     <div id="itemContainer" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
     @if (!empty($items) && count($items) > 0)
-            @foreach ($items as $index => $item)
-                <div class="grid-item"style="display: {{ $index < 8 ? 'block' : 'none' }}">
-                    <div class="item-image-wrapper">
-                        @if (!empty($item->screenshots->first()))
-                            <img src="{{ asset('storage/' . $item->screenshots->first()->path) }}" 
-                                 alt="{{ $item->product_name }}" 
-                                 class="item-image">
-                        @else
-                            <img src="/images/no-image.png" 
-                                 alt="No Image" 
-                                 class="item-image">
-                        @endif
-                    </div>
-                    <div class="item-info">
-                        <p class="item-name">{{ $item->product_name }}</p>
-                        <p class="item-rating">Lokasi : {{ $item->city }}</p>
-                    </div>
+        @foreach ($items as $index => $item)
+            <div class="grid-item" style="display: {{ $index < 8 ? 'block' : 'none' }}">
+                <button 
+                    class="btn btn-danger btn-sm delete-btn" 
+                    data-item-id="{{ $item->id }}" 
+                    style="position: absolute; right: 5px; top: 5px; z-index: 10;">✖</button>
+                <div class="item-image-wrapper">
+                    @if (!empty($item->screenshots->first()))
+                        <img src="{{ asset('storage/' . $item->screenshots->first()->path) }}" 
+                             alt="{{ $item->product_name }}" 
+                             class="item-image">
+                    @else
+                        <img src="/images/no-image.png" 
+                             alt="No Image" 
+                             class="item-image">
+                    @endif
                 </div>
-            @endforeach
-
+                <div class="item-info">
+                    <p class="item-name">{{ $item->product_name }}</p>
+                    <p class="item-rating">Lokasi : {{ $item->city }}</p>
+                </div>
+            </div>
+        @endforeach
     @else
         <p class="text-center">Tidak ada data barang yang tersedia.</p>
     @endif
+</div>
+
         </div>
             <!-- Tombol Muat Lebih Banyak -->
            <div class="text-center mt-3">
@@ -170,24 +173,62 @@
     <!-- Include Footer -->
     @include('partials.footer')
 
-    <!-- Script Maps -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
+   <!-- Script Maps -->
+   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const initializeMap = () => {
         const map = L.map('map').setView([-0.9148, 100.4582], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-                map.setView([userLat, userLng], 13);
-                L.marker([userLat, userLng]).addTo(map)
-                    .bindPopup('Kamu Saat Ini')
-                    .openPopup();
-            },
-            () => console.error('Lokasi gagal diambil.')
-        );
+        return map;
+    };
+
+    const setUserLocation = (map, position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        map.setView([userLat, userLng], 13);
+        L.marker([userLat, userLng]).addTo(map)
+            .bindPopup('Kamu Saat Ini')
+            .openPopup();
+    };
+
+    const handleGeolocationError = (error) => {
+        console.error('Lokasi gagal diambil:', error.message);
+        alert('Gagal mendapatkan lokasi. Pastikan GPS diaktifkan atau berikan izin lokasi pada browser.');
+    };
+
+    const map = initializeMap();
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => setUserLocation(map, position),
+        (error) => handleGeolocationError(error)
+    );
+</script>
+
+    <!-- Script Load More -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const items = document.querySelectorAll('.grid-item');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            let itemsToShow = 8;
+
+            loadMoreBtn.addEventListener('click', function () {
+                const totalItems = items.length;
+
+                // Tampilkan 8 item berikutnya
+                for (let i = itemsToShow; i < itemsToShow + 8 && i < totalItems; i++) {
+                    items[i].style.display = 'block';
+                }
+
+                itemsToShow += 8;
+
+                // Sembunyikan tombol jika semua item sudah tampil
+                if (itemsToShow >= totalItems) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+        });
     </script>
 
     <!-- Script Load More -->
@@ -213,6 +254,42 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const itemId = this.dataset.itemId;
+
+                if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                    fetch(/item/${itemId}, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Hapus elemen item dari DOM
+                            this.closest('.grid-item').remove();
+                            alert(data.success);
+                        } else {
+                            alert(data.error || 'Terjadi kesalahan.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat menghapus item.');
+                    });
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>
